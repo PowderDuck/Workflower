@@ -4,15 +4,16 @@ on:
   push:
     branches:
       - master
+  workflow_dispath:
 
 jobs:
   general:
     runs-on: ubuntu-latest
     steps:
 
-      name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      name: Running
-      run: |
-        echo "Running from CLI"
+      - name: Running
+        run: |
+          echo "Running from CLI"
