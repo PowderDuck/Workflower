@@ -34,4 +34,4 @@ jobs:
         run: echo "${{ github.sha }}, ${{ github.repository }}"
 
       - name: Docker Login
-        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ vars.REGISTRY_URL }} --password-stdin
+        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login -u ${{ secrets.REGISTRY_USERNAME }} ${{ vars.REGISTRY_URL }} --password-stdin
