@@ -29,3 +29,9 @@ jobs:
           echo "Running from CLI"
           dotnet --version
           echo "CLI Variable: ${{ vars.BOOTS }}"
+
+      - name: Variables
+        run: echo "${{ github.sha }}, ${{ github.repository }}"
+
+      - name: Docker Login
+        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ vars.REGISTRY_URL }} --password-stdin
