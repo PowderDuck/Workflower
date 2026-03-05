@@ -8,6 +8,8 @@ on:
 
 env:
   URL: ${{ vars.REGISTRY_URL }}
+  IMAGE: ${{ vars.IMAGE }}
+  HASH: ${{ github.sha }}
 
 jobs:
   general:
@@ -24,8 +26,9 @@ jobs:
 
       - name: Docker Build
         run: |
-          export IMAGE=workflow:${{ vars.VERSION_TAG }}
-          echo "Image: $IMAGE"
+          docker build \
+            -t $IMAGE:latest \
+            -t $IMAGE:$HASH .
 
       - name: Running
         run: |
@@ -34,7 +37,14 @@ jobs:
           echo "CLI Variable: ${{ vars.BOOTS }}"
 
       - name: Variables
-        run: echo "${{ github.sha }}, ${{ github.repository }}, $URL"
+        run: echo "$HASH, ${{ github.repository }}, $URL"
 
-      - name: Docker Login
-        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login -u ${{ secrets.REGISTRY_USERNAME }} ${{ vars.REGISTRY_URL }} --password-stdin
+      - name: Hook
+        run: |
+          curl -X POST ${{ vars.HOOK_URL }} \
+            -H "Authorization: Bearer ${{ secrets.HOOK_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"image": "$IMAGE:$HASH"}';
+
+        #      - name: Docker Login
+        #        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login -u ${{ secrets.REGISTRY_USERNAME }} ${{ vars.REGISTRY_URL }} --password-stdin
