@@ -44,7 +44,7 @@ jobs:
           curl -X POST ${{ vars.HOOK_URL }} \
             -H "Authorization: Bearer ${{ secrets.HOOK_TOKEN }}" \
             -H "Content-Type: application/json" \
-            -d '{"image": "$IMAGE:$HASH"}';
+            -d "{\"image\": \"$IMAGE:$HASH\"}";
 
         #      - name: Docker Login
         #        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login -u ${{ secrets.REGISTRY_USERNAME }} ${{ vars.REGISTRY_URL }} --password-stdin
